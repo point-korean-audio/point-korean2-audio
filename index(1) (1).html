@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="『Pointで学ぶ韓国語2』付属音声の再生・ダウンロードページです。">
+  <title>『Pointで学ぶ韓国語2』音声教材</title>
+  <style>
+    :root { color-scheme:light; --ink:#16231d; --muted:#607068; --green:#176b4d; --pale:#edf7f2; --line:#d8e5de; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"Noto Sans JP","Yu Gothic",Meiryo,sans-serif; color:var(--ink); background:#f7faf8; line-height:1.65; }
+    header { background:linear-gradient(135deg,#0f5138,#20835e); color:white; padding:38px 20px 32px; }
+    header div, main, footer div { max-width:960px; margin:auto; }
+    h1 { margin:0 0 8px; font-size:clamp(1.55rem,4vw,2.35rem); line-height:1.35; }
+    header p { margin:0; opacity:.92; }
+    main { padding:28px 18px 44px; }
+    .notice { padding:16px 18px; background:var(--pale); border:1px solid var(--line); border-radius:12px; margin-bottom:22px; }
+    .tools { display:flex; gap:12px; align-items:center; justify-content:space-between; margin:0 0 18px; flex-wrap:wrap; }
+    .tools h2 { margin:0; font-size:1.25rem; }
+    input { width:min(280px,100%); font:inherit; padding:10px 13px; border:1px solid #aebdb5; border-radius:9px; background:white; }
+    #tracks { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+    .track { background:white; border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:0 2px 9px rgba(22,35,29,.04); }
+    .track-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:9px; }
+    .track strong { font-size:1rem; }
+    audio { width:100%; height:40px; display:block; }
+    .download { display:inline-block; margin-top:9px; color:var(--green); font-weight:700; text-decoration:none; }
+    .download:hover, .download:focus { text-decoration:underline; }
+    footer { border-top:1px solid var(--line); color:var(--muted); background:white; padding:22px 18px 30px; font-size:.9rem; }
+    footer p { margin:4px 0; }
+    @media (max-width:520px) { header{padding-top:28px} main{padding-top:20px} #tracks{grid-template-columns:1fr} input{width:100%} }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>『Pointで学ぶ韓国語2』音声教材</h1>
+      <p>各トラックを再生、または端末にダウンロードしてご利用いただけます。</p>
+    </div>
+  </header>
+  <main>
+    <div class="notice">音声は本書による学習目的に限ってご利用ください。転載は禁止転載、再配布、改変および販売を禁じます。</div>
+    <div class="tools">
+      <h2>音声一覧（全51トラック）</h2>
+      <input id="search" type="search" inputmode="numeric" placeholder="トラック番号を検索（例：25）" aria-label="トラック番号を検索">
+    </div>
+    <div id="tracks" aria-live="polite"></div>
+  </main>
+  <footer><div><p>著者：崔相振・呉香善</p><p>発行：花書院</p></div></footer>
+  <script>
+    const list = document.getElementById('tracks');
+    const search = document.getElementById('search');
+    const fileName = n => `- トラック ${String(n).padStart(2,'0')}.mp3`;
+    function render(query='') {
+      const q = query.trim().replace(/^0+/, '');
+      list.innerHTML = '';
+      for (let n=1; n<=51; n++) {
+        if (q && !String(n).includes(q)) continue;
+        const file = fileName(n);
+        const card = document.createElement('section');
+        card.className = 'track';
+        card.innerHTML = `<div class="track-head"><strong>Track ${String(n).padStart(2,'0')}</strong></div><audio controls preload="none" src="${file}">音声を再生できません。</audio><a class="download" href="${file}" download>音声をダウンロード</a>`;
+        list.appendChild(card);
+      }
+    }
+    search.addEventListener('input', e => render(e.target.value));
+    render();
+  </script>
+</body>
+</html>
